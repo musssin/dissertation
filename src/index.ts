@@ -5,6 +5,7 @@ import bodyParser from 'body-parser';
 import express, {Express} from 'express';
 import httpContext from 'express-http-context';
 import { GlobalErrorHandler } from './middleware/global-error-handler';
+import { BlockChainController } from './controller/blochain-controller';
 // import log4js from 'log4js';
 
 dotenv.config();
@@ -16,9 +17,10 @@ const app: Express = express();
 app.use(bodyParser.json());
 app.use(httpContext.middleware);
 useExpressServer(app, {
-  controllers: [UserController],
+  controllers: [UserController, BlockChainController],
   middlewares: [GlobalErrorHandler],
   defaultErrorHandler: false
 });
+// app.locals.blockchain = null;
 
 app.listen(port, () => console.log(`Running on port ${port}`));
