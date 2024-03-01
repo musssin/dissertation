@@ -3,7 +3,7 @@
 type SegmentationResult = {
 
   // toys: ToyWithCount[];
-  toys: number[];
+  toys: string;
   image: string;
   // total: number;
   error: boolean;
