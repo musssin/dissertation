@@ -1,11 +1,10 @@
-import {  useExpressServer } from 'routing-controllers';
-import { UserController } from './controller/user-controller';
+import { useExpressServer } from 'routing-controllers';
 import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
-import express, {Express} from 'express';
+import express, { Express } from 'express';
 import httpContext from 'express-http-context';
 import { GlobalErrorHandler } from './middleware/global-error-handler';
-import { BlockChainController } from './controller/blochain-controller';
+import { SegmentationController } from './controller/segmentation-controller';
 // import log4js from 'log4js';
 
 dotenv.config();
@@ -17,7 +16,7 @@ const app: Express = express();
 app.use(bodyParser.json());
 app.use(httpContext.middleware);
 useExpressServer(app, {
-  controllers: [UserController, BlockChainController],
+  controllers: [SegmentationController],
   middlewares: [GlobalErrorHandler],
   defaultErrorHandler: false
 });
