@@ -2,9 +2,8 @@ import { Body, Controller, Get, OnUndefined, Post, } from 'routing-controllers';
 import 'reflect-metadata';
 import { SegmentationResult } from 'src/models/SegmentationResult';
 import fs from 'fs';
-import { spawnSync, exec, spawn } from 'child_process';
-import { readFile, appendFile } from 'fs/promises';
-import path from 'path';
+import { spawn } from 'child_process';
+import { readFile } from 'fs/promises';
 @Controller()
 export class SegmentationController {
 
@@ -33,22 +32,16 @@ export class SegmentationController {
       await fs.promises.writeFile(fileName, base64Data, 'base64');
 
       await runPythonScript('dist/scripts/segmentation.py');
-      const error = 'error';
 
-      if (true) {
+      const image = await readFile('dist/scripts/segmented-image.jpg');
+      const base64Image = Buffer.from(image).toString('base64');
 
-        const image = await readFile('dist/scripts/segmented-image.jpg');
-        const base64Image = Buffer.from(image).toString('base64');
+      const result = await readFile('dist/scripts/results.json');
+      const { classes } = JSON.parse(result?.toString());
 
-        const result = await readFile('dist/scripts/results.json');
-        const { classes } = JSON.parse(result?.toString());
-
-        segmentationResult.error = false;
-        segmentationResult.toys = classes;
-        segmentationResult.image = base64Image;
-      } else {
-        console.log(error);
-      }
+      segmentationResult.error = false;
+      segmentationResult.toys = classes;
+      segmentationResult.image = base64Image;
 
     } catch (error) {
       console.log(error);
