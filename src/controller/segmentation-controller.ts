@@ -52,7 +52,12 @@ export class SegmentationController {
 function runPythonScript(scriptPath) {
   return new Promise((resolve, reject) => {
     console.log(scriptPath);
-    const python = spawn('python', [scriptPath]);
+    let python;
+    if (process.env.ENVIRONMENT === 'PROD') {
+      python = spawn('dist/scripts/script', []);
+    } else {
+      python = spawn('python', [scriptPath]);
+    }
     let data = '';
 
     python.stdout.on('data', (chunk) => {
