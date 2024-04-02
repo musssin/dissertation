@@ -11,7 +11,7 @@ const app: Express = express();
 
 app.use(express.json());
 app.use(express.urlencoded());
-
+app.use(express.static('public'));
 app.use(httpContext.middleware);
 useExpressServer(app, {
   controllers: [SegmentationController],
